@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: wizzair-bot
+    env: node
+    buildCommand: |
+      npm install
+      npx playwright install --with-deps
+    startCommand: node index.js
+    envVars:
+      - key: WIZZ_EMAIL
+        sync: false
+      - key: WIZZ_PASS
+        sync: false
