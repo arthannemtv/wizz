@@ -30,7 +30,6 @@ app.post("/find-flights", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 
-import express from "express";
 import { checkFlights } from "./scraper.js";
 
 const app = express();
