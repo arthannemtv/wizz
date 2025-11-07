@@ -4,8 +4,8 @@ services:
     env: node
     buildCommand: |
       npm install
-      npx playwright install --with-deps
-    startCommand: node index.js
+      npx playwright install chromium --with-deps
+    startCommand: npm start
     envVars:
       - key: WIZZ_EMAIL
         sync: false
