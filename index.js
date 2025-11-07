@@ -1,4 +1,4 @@
-const { chromium } = require('playwright-core');
+const { chromium } = require('playwright');
 
 (async () => {
   try {
@@ -13,6 +13,7 @@ const { chromium } = require('playwright-core');
     console.log("Deschid site-ul Wizz Air...");
 
     await page.goto("https://multipass.wizzair.com/ro/w6/subscriptions");
+
     await page.click('text=Conectare');
 
     await page.fill('input[name="email"]', process.env.WIZZ_EMAIL);
