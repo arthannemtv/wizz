@@ -29,3 +29,18 @@ app.post("/find-flights", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
+import express from "express";
+import { checkFlights } from "./scraper.js";
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get("/", (req, res) => res.send("Wizz Flight Finder API active 🛫"));
+app.get("/run", async (req, res) => {
+  await checkFlights();
+  res.send("Scraper run complete. Check logs.");
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
