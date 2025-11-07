@@ -1,45 +1,24 @@
-import express from "express";
-import { chromium } from "playwright";
+const { chromium } = require('playwright');
 
-const app = express();
-app.use(express.json());
-
-app.get("/", (req, res) => res.send("Wizz Flight Finder API active 🛫"));
-
-app.post("/find-flights", async (req, res) => {
-  const { from = "OTP", days = 2 } = req.body;
-
+(async () => {
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+  const context = await browser.newContext();
+  const page = await context.newPage();
 
-  try {
-    await page.goto("https://multipass.wizzair.com/");
-    // Aici ulterior vom adăuga logica de căutare zboruri.
+  console.log("Merg pe site...");
+  await page.goto("https://multipass.wizzair.com/auth/realms/w6/protocol/openid-connect/auth?scope=openid%20roles%20tenant%20address%20phone%20subs%20email%20passenger&response_type=code&client_id=cvo-laravel&redirect_uri=https%3A%2F%2Fmultipass.wizzair.com%2Fw6%2Fsubscriptions%2Fauth%2Fcallback&state=ff41027cd4186d4d4992107e40178f90&ui_locales=en&kc_locale=en");
+  
+  // exemplu login (înlocuiește cu propriile selectoare corecte)
+  await page.click('text=Conectare');
+  await page.fill('input[name="email"]', process.env.WIZZ_EMAIL);
+  await page.fill('input[name="password"]', process.env.WIZZ_PASS);
+  await page.click('button[type="submit"]');
 
-    // De test:
-    await new Promise(r => setTimeout(r, 2000));
+  await page.waitForURL('**/subscriptions');
+  console.log("Autentificat!");
 
-    await browser.close();
-    res.json({ status: "ok", message: "Browser ran successfully" });
-  } catch (err) {
-    await browser.close();
-    res.status(500).json({ error: err.message });
-  }
-});
+  await page.goto("https://multipass.wizzair.com/ro/w6/subscriptions/availability/a2b6c8a5-19d4-413f-90a3-0903c25d8a19");
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
-
-import { checkFlights } from "./scraper.js";
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get("/", (req, res) => res.send("Wizz Flight Finder API active 🛫"));
-app.get("/run", async (req, res) => {
-  await checkFlights();
-  res.send("Scraper run complete. Check logs.");
-});
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
+  console.log(await page.title());
+  await browser.close();
+})();
