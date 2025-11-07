@@ -5,6 +5,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "playwright": "^1.49.0"
+    "playwright-core": "^1.49.0",
+    "@playwright/test": "^1.49.0"
   }
 }
