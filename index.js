@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright-core');
 
 (async () => {
   try {
@@ -13,7 +13,6 @@ const { chromium } = require('playwright');
     console.log("Deschid site-ul Wizz Air...");
 
     await page.goto("https://multipass.wizzair.com/ro/w6/subscriptions");
-
     await page.click('text=Conectare');
 
     await page.fill('input[name="email"]', process.env.WIZZ_EMAIL);
@@ -34,4 +33,4 @@ const { chromium } = require('playwright');
   } catch (err) {
     console.error("Eroare Playwright:", err);
   }
-})(); // ← foarte important să fie aici
+})();
